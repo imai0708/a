@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Request;
+use App\Http\Controllers\PostController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,4 +16,27 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+})->name('welcome');
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified'
+])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
 });
+
+Route::get('advisor/register', function () {
+    return view('advisor.register');
+})->middleware('guest')
+    ->name('advisor.register');
+
+Route::resource('posts', PostController::class)
+    ->only(['create', 'store', 'edit', 'update', 'destroy'])
+    ->middleware('can:advisor');
+
+Route::resource('posts', PostController::class)
+    ->only(['show', 'index'])
+    ->middleware('auth');

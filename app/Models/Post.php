@@ -8,6 +8,21 @@ use Illuminate\Database\Eloquent\Model;
 class Post extends Model
 {
     use HasFactory;
+    // ステータス
+    const STATUS_CLOSE = 0;
+    const STATUS_OPEN = 1;
+    const STATUS_LIST = [
+        self::STATUS_CLOSE => '未公開',
+        self::STATUS_OPEN => '公開',
+    ];
+
+    protected $fillable = [
+        'title',
+        'occupation_id',
+        'due_date',
+        'description',
+        'is_published',
+    ];
 
     public function advisor()
     {
@@ -19,14 +34,14 @@ class Post extends Model
         return $this->hasMany(\App\Models\Favorites::class);
     }
 
-    public function genre()
+    public function genres()
     {
-        return $this->hasMany(\App\Models\Genre::class);
+        return $this->belongsToMany(\App\Models\Genre::class);
     }
 
     public function item()
     {
-        return $this->hasMany(\App\Models\Item::class);
+        return $this->belongsTo(\App\Models\Item::class);
     }
 
     public function situations()

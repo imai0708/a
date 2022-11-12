@@ -15,7 +15,7 @@ class CreateSituationsTable extends Migration
     {
         Schema::create('situations', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->comment('イベント');
             $table->timestamps();
         });
     }

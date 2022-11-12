@@ -23,7 +23,7 @@ class CreateRequestsTable extends Migration
                 ->constrained()
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
-            $table->tinyInteger('status')->default(0);
+            $table->tinyInteger('status')->default(0)->comment('依頼の認否');
             $table->timestamps();
             $table->unique(['advisor_id', 'user_id']);
         });

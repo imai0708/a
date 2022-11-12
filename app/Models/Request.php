@@ -9,6 +9,7 @@ class Request extends Model
 {
     use HasFactory;
 
+
     public function advisor()
     {
         return $this->belongsTo(Advisor::class);
@@ -17,10 +18,5 @@ class Request extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function messages()
-    {
-        return $this->morphMany(Message::class, 'messageable');
     }
 }

@@ -67,8 +67,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
-
+    'timezone' => 'Asia/Tokyo',
     /*
     |--------------------------------------------------------------------------
     | Application Locale Configuration
@@ -80,8 +79,7 @@ return [
     |
     */
 
-    'locale' => 'en',
-
+    'locale' => 'ja',
     /*
     |--------------------------------------------------------------------------
     | Application Fallback Locale
@@ -93,8 +91,7 @@ return [
     |
     */
 
-    'fallback_locale' => 'en',
-
+    'faker_locale' => 'ja_JP',
     /*
     |--------------------------------------------------------------------------
     | Faker Locale
@@ -174,6 +171,8 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\FortifyServiceProvider::class,
+        App\Providers\JetstreamServiceProvider::class,
 
     ],
 

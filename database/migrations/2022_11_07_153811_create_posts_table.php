@@ -19,10 +19,6 @@ class CreatePostsTable extends Migration
                 ->constrained()
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
-            $table->foreignId('genre_id')
-                ->constrained()
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
             $table->foreignId('item_id')
                 ->constrained()
                 ->cascadeOnUpdate()

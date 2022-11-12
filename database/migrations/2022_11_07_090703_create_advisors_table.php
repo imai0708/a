@@ -15,7 +15,7 @@ class CreateAdvisorsTable extends Migration
     {
         Schema::create('advisors', function (Blueprint $table) {
             $table->id();
-            $table->string('job');
+            $table->string('job')->comment('職業');
             $table->string('price');
             $table->foreignId('user_id')
                 ->constrained()
