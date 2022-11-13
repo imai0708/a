@@ -36,8 +36,7 @@
                         <div class="mt-4">
                             <div class="flex justify-between text-sm items-center mb-4">
                                 <div class="border border-gray-900 px-2 h-7 leading-7 rounded-full">
-                                    {{ dd($j->genres) }}
-                                    {{ $j->genres->pluck('name')->join(' ') }}
+                                    {{ $j->genres()->pluck('genres.name')->join(' ') }}
                                 </div>
                                 {{-- <div class="text-gray-700 text-sm text-right">
                                     <span>応募期限 :{{ $j->due_date }}</span>
@@ -56,11 +55,11 @@
                                         @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
                                             <img class="h-8 w-8 rounded-full object-cover"
                                                 src="{{ $j->advisor->profile_photo_url }}"
-                                                alt="{{ $j->advisor->name }}" />
+                                                alt="{{ $j->advisor->user->name }}" />
                                         @endif
                                     </div>
                                     <div class="text-sm font-semibold">
-                                        {{ $j->advusor->name }}
+                                        {{ $j->advisor->user->name }}
                                         + <span class="font-normal ml-2">{{ $j->created_at->diffForHumans() }}</span>
                                     </div>
                                 </div>

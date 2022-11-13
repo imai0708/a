@@ -23,14 +23,18 @@ class PostRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        $route = $this->route()->getName();
+
+        $rule = [
             'title' => 'required|string|max:50',
-            'item_id' => 'required|exists:items,id',
-            'genre_id' => 'required|exists:genres,id',
-            'situation_id' => 'required|exists:situation,id',
-            'due_date' => 'required|after_or_equal:today',
             'description' => 'required|string|max:2000',
-            'status' => 'nullable|boolean',
+            'is_published' => 'nullable|boolean',
         ];
+
+        if ($route === 'posts.update') {
+            $rule['due_date'] = 'required|date';
+        }
+
+        return $rule;
     }
 }

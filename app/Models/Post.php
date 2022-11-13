@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Post extends Model
 {
@@ -32,6 +33,25 @@ class Post extends Model
         'description',
         'is_published',
     ];
+
+    public function scopeMyJobOffer(Builder $query, $params)
+    {
+        if (Auth::user()->can('advisor')) {
+            $query->latest()
+                ->with(['entries', 'occupation'])
+                ->where('advisor_id', Auth::user()->advisor->id)
+                ->where('is_published', $params['is_published'] ?? self::STATUS_OPEN);
+        } else {
+            $query->latest()
+                ->with(['entries', 'occupation'])
+                ->whereHas('entries', function ($query) use ($params) {
+                    $query->where('user_id', Auth::user()->id);
+                });
+        }
+
+        return $query;
+    }
+
 
 
     public function scopePublished(Builder $query)
@@ -61,7 +81,7 @@ class Post extends Model
         return $this->belongsTo(\App\Models\Item::class);
     }
 
-    public function situations()
+    public function situation()
     {
         return $this->belongsTo(\App\Models\Situation::class);
     }

@@ -39,7 +39,7 @@
                     required>
                     <option disabled selected value="">選択してください</option>
                     @foreach ($situations as $situation)
-                        <option value="{{ $genre->id }}" @if ($situation->id == old('situation_id')) selected @endif>
+                        <option value="{{ $situation->id }}" @if ($situation->id == old('situation_id')) selected @endif>
                             {{ $situation->name }}</option>
                     @endforeach
                 </select>
@@ -55,7 +55,7 @@
                     <option disabled selected value="">選択してください</option>
                     @foreach ($genres as $genre)
                         <option value="{{ $genre->id }}" @if ($genre->id == old('genre_id')) selected @endif>
-                            {{ $genr->name }}</option>
+                            {{ $genre->name }}</option>
                     @endforeach
                 </select>
             </div>

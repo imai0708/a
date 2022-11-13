@@ -27,8 +27,8 @@ class PostController extends Controller
         $posts->appends($params);
 
         $genres = Genre::all();
-    
-        return view('posts.index', compact('posts','genres'));
+
+        return view('posts.index', compact('posts', 'genres'));
     }
 
 
@@ -54,7 +54,7 @@ class PostController extends Controller
     public function store(PostRequest $request)
     {
         $post = new Post($request->all());
-        $post->advisor_id = $request->user()->adovisor->id;
+        $post->advisor_id = $request->user()->advisor->id;
 
         try {
             // 登録
@@ -105,7 +105,25 @@ class PostController extends Controller
     public function update(PostRequest $request, Post $post)
 
     {
-        //
+        if (Auth::user()->cannot('update', $post)) {
+            return redirect()->route('posts.show', $post)
+                ->withErrors('自分の求人情報以外は更新できません');
+
+            if (Auth::user()->cannot('update', $post)) {
+                return redirect()->route('posts.show', $post)
+                    ->withErrors('自分の求人情報以外は更新できません');
+            }
+            $post->fill($request->all());
+            try {
+                $post->save();
+            } catch (\Exception $e) {
+                return back()->withInput()
+                    ->withErrors('求人情報更新処理でエラーが発生しました');
+
+                return redirect()->route('posts.show', $post)
+                    > with('notice', '求人情報を更新しました');
+            }
+        }
     }
 
     /**
@@ -116,6 +134,8 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+
+        $post = Post::all();
+        return view('posts.edit', compact('post'));
     }
 }

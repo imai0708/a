@@ -46,9 +46,17 @@ class RequestController extends Controller
      * @param  \App\Models\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request)
+    public function show(Post $job_offer)
     {
-        //
+        JobOfferView::updateOrCreate([
+            'job_offer_id' => $job_offer->id,
+            'user_id' => Auth::user()->id,
+        ]);
+
+        $entry = !isset(Auth::user()->company)
+            ? $job_offer->entries()->firstWhere('user_id', Auth::user()->id)
+            : '';
+        return view('job_offers.show', compact('job_offer', 'entry'));
     }
 
     /**
