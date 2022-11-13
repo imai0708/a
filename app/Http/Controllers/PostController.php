@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Http\Requests\PostRequest;
 use App\Models\Genre;
 use App\Models\Item;
 use App\Models\Occupation;
 use App\Models\Post;
 use App\Models\Situation;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -16,10 +18,19 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $params = $request->query();
+        $posts = Post::search($params)
+            ->with(['advisor'])->latest()->paginate(5);
+
+        $posts->appends($params);
+
+        $genres = Genre::all();
+    
+        return view('posts.index', compact('posts','genres'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -42,6 +53,20 @@ class PostController extends Controller
      */
     public function store(PostRequest $request)
     {
+        $post = new Post($request->all());
+        $post->advisor_id = $request->user()->adovisor->id;
+
+        try {
+            // 登録
+            $post->save();
+        } catch (\Exception $e) {
+            return back()->withInput()
+                ->withErrors('記事登録処理でエラーが発生しました');
+        }
+
+        return redirect()
+            ->route('posts.show', $post)
+            ->with('notice', '記事を登録しました');
     }
 
     /**
@@ -52,6 +77,10 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
+        // Post::updateOrCreate([
+        //     'post_id' => $post->id,
+        //     'user_id' => Auth::user()->id,
+        // ]);
         return view('posts.show', compact('post'));
     }
 
@@ -69,11 +98,12 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\PostRequest  $request
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Post $post)
+    public function update(PostRequest $request, Post $post)
+
     {
         //
     }

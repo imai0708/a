@@ -14,9 +14,14 @@ use App\Http\Controllers\PostController;
 |
 */
 
-Route::get('/', function () {
+Route::get('/welcome', function () {
     return view('welcome');
-})->name('welcome');
+})->middleware('guest')
+    ->name('welcome');
+
+Route::get('/', [PostController::class, 'index'])
+    ->middleware('auth')
+    ->name('root');
 
 Route::middleware([
     'auth:sanctum',

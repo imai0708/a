@@ -55,6 +55,12 @@
                                 {{ __('Manage Account') }}
                             </div>
 
+                            @can('create', App\Models\Post::class)
+                                <x-jet-dropdown-link href="{{ route('posts.create') }}">
+                                    {{ '記事報登録' }}
+                                </x-jet-dropdown-link>
+                            @endcan
+
                             <x-jet-dropdown-link href="{{ route('profile.show') }}">
                                 {{ __('Profile') }}
                             </x-jet-dropdown-link>
@@ -63,6 +69,11 @@
 
                             <div class="border-t border-gray-100"></div>
 
+                            {{-- @can('create', App\Models\Post::class)
+                                <x-jet-dropdown-link href="{{ route('posts.create') }}">
+                                    {{ '記事登録' }}
+                                </x-jet-dropdown-link>
+                            @endcan --}}
                             <!-- Authentication -->
                             <form method="POST" action="{{ route('logout') }}" x-data>
                                 @csrf

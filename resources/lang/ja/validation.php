@@ -133,4 +133,18 @@ return [
             'rule-name' => 'custom-message',
         ],
     ],
+    'attributes'           => [
+        'title' => 'タイトル',
+        'genre_id' => '系統',
+        'situation_id' => 'シチュエーション',
+        'item_id' => 'アイテム',
+        'description' => '詳細',
+        'status' => 'ステータス',
+    ],
+
+    'values' => [
+        'due_date' => [
+            'today' => '今日',
+        ]
+    ]
 ];
