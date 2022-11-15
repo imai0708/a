@@ -25,11 +25,21 @@ class PostRequest extends FormRequest
     {
         $route = $this->route()->getName();
 
+        $route = $this->route()->getName();
+
         $rule = [
             'title' => 'required|string|max:50',
+            'occupation_id' => 'required|exists:occupations,id',
+            'due_date' => 'required|after_or_equal:today',
             'description' => 'required|string|max:2000',
             'is_published' => 'nullable|boolean',
         ];
+
+        if ($route === 'job_offer.update') {
+            $rule['due_date'] = 'required|date';
+        }
+
+        return $rule;
 
         if ($route === 'posts.update') {
             $rule['due_date'] = 'required|date';

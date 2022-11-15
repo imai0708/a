@@ -108,11 +108,6 @@ class PostController extends Controller
         if (Auth::user()->cannot('update', $post)) {
             return redirect()->route('posts.show', $post)
                 ->withErrors('自分の求人情報以外は更新できません');
-
-            if (Auth::user()->cannot('update', $post)) {
-                return redirect()->route('posts.show', $post)
-                    ->withErrors('自分の求人情報以外は更新できません');
-            }
             $post->fill($request->all());
             try {
                 $post->save();
@@ -135,7 +130,22 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
 
-        $post = Post::all();
-        return view('posts.edit', compact('post'));
+        // $post = Post::all();
+        // return view('posts.edit', compact('post'));
+
+        if (Auth::user()->cannot('delete', $post)) {
+            return redirect()->route('posts.show', $post)
+                ->withErrors('自分の求人情報以外は削除できません');
+        }
+
+        try {
+            $post->delete();
+        } catch (\Exception $e) {
+            return back()->withInput()
+                ->withErrors('求人情報削除処理でエラーが発生しました');
+        }
+
+        return redirect()->route('posts.index')
+            ->with('notice', '求人情報を削除しました');
     }
 }

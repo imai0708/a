@@ -26,6 +26,29 @@
             <p class="text-gray-700 text-base">{!! nl2br(e($post->body)) !!}</p>
         </article>
         <div class="flex flex-row text-center my-4">
+
+            @can('user')
+                @if (empty($entry))
+                    <form action="{{ route('posts.entries.store', $post) }}" method="post">
+                        @csrf
+                        <input type="submit" value="依頼" onclick="if(!confirm('依頼しますか？')){return false};"
+                            class="bg-gradient-to-r from-indigo-500 to-blue-600 hover:bg-gradient-to-l hover:from-blue-500 hover:to-indigo-600 text-gray-100 p-2 rounded-full tracking-wide font-semibold shadow-lg cursor-pointer transition ease-in duration-500 w-full sm:w-32">
+                    </form>
+                @else
+                    @if (App\Models\Request::STATUS_APPROVAL == $entry->status)
+                        @if (Route::has('entries.messages.index'))
+                            <a href="{{ route('entries.messages.index', $entry) }}"
+                                class="bg-gradient-to-r from-indigo-500 to-blue-600 hover:bg-gradient-to-l hover:from-blue-500 hover:to-indigo-600 text-gray-100 p-2 rounded-full tracking-wide font-semibold shadow-lg cursor-pointer transition ease-in duration-500 w-full sm:w-32 sm:mr-2 mb-2 sm:mb-0">メッセージ</a>
+                        @endif
+                    @endif
+                    <form action="{{ route('posts.entries.destroy', [$post, $entry]) }}" method="post">
+                        @csrf
+                        @method('DELETE')
+                        <input type="submit" value="依頼取消" onclick="if(!confirm('依頼をを取り消しますか？')){return false};"
+                            class="bg-gradient-to-r from-pink-500 to-purple-600 hover:bg-gradient-to-l hover:from-purple-500 hover:to-pink-600 text-gray-100 p-2 rounded-full tracking-wide font-semibold shadow-lg cursor-pointer transition ease-in duration-500 w-full sm:w-32">
+                    </form>
+                @endif
+            @endcan
             @can('update', $post)
                 <a href="{{ route('posts.edit', $post) }}"
                     class="bg-gradient-to-r from-indigo-500 to-blue-600 hover:bg-gradient-to-l hover:from-blue-500 hover:to-indigo-600 text-gray-100 p-2 rounded-full tracking-wide font-semibold shadow-lg cursor-pointer transition ease-in duration-500 w-full sm:w-32 sm:mr-2 mb-2 sm:mb-0">編集</a>

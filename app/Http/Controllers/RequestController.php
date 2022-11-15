@@ -2,12 +2,52 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
 use App\Models\Request;
-use App\Models\Occupation;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RequestController extends Controller
 {
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \App\Models\JobOffer  $job_offer
+     * @return \Illuminate\Http\Response
+     */
+    public function store(JobOffer $job_offer)
+    {
+        $entry = new Entry([
+            'job_offer_id' => $job_offer->id,
+            'user_id' => Auth::user()->id,
+        ]);
+
+        try {
+            // 登録
+            $entry->save();
+        } catch (\Exception $e) {
+            return back()->withInput()
+                ->withErrors('エントリーでエラーが発生しました');
+        }
+
+        return redirect()
+            ->route('job_offers.show', $job_offer)
+            ->with('notice', 'エントリーしました');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\JobOffer  $job_offer
+     * @param  \App\Models\Entry  $entry
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Post $post, Request $request)
+    {
+        $request->delete();
+
+        return redirect()->route('posts.show', $post)
+            ->with('notice', '依頼を取り消しました');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -33,7 +73,6 @@ class RequestController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
@@ -46,18 +85,18 @@ class RequestController extends Controller
      * @param  \App\Models\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function show(Post $job_offer)
-    {
-        JobOfferView::updateOrCreate([
-            'job_offer_id' => $job_offer->id,
-            'user_id' => Auth::user()->id,
-        ]);
+    // public function show(Post $job_offer)
+    // {
+    //     JobOfferView::updateOrCreate([
+    //         'job_offer_id' => $job_offer->id,
+    //         'user_id' => Auth::user()->id,
+    //     ]);
 
-        $entry = !isset(Auth::user()->company)
-            ? $job_offer->entries()->firstWhere('user_id', Auth::user()->id)
-            : '';
-        return view('job_offers.show', compact('job_offer', 'entry'));
-    }
+    //     $entry = !isset(Auth::user()->company)
+    //         ? $job_offer->entries()->firstWhere('user_id', Auth::user()->id)
+    //         : '';
+    //     return view('job_offers.show', compact('job_offer', 'entry'));
+    // }
 
     /**
      * Show the form for editing the specified resource.

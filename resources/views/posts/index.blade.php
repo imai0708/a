@@ -60,7 +60,7 @@
                                     </div>
                                     <div class="text-sm font-semibold">
                                         {{ $j->advisor->user->name }}
-                                        + <span class="font-normal ml-2">{{ $j->created_at->diffForHumans() }}</span>
+                                        <span class="font-normal ml-2">{{ $j->created_at->diffForHumans() }}</span>
                                     </div>
                                 </div>
                                 <div>
