@@ -1,3 +1,4 @@
+<x-app-layout>
     <div class="container mx-auto w-3/5 my-8 px-4 py-4">
         @can('advisor')
             <div class="flex justify-end items-center mb-3">
@@ -9,7 +10,7 @@
                                     @if (Request::get('is_published') === (string) $value || (Request::get('is_published') === null && App\Models\Post::STATUS_OPEN == $value))
                                         'text-green-500 font-bold' @endif
                                 "> --}}
-                                {{ $name }}
+                            {{ $name }}
                             {{-- </a> --}}
                         </li>
                     @endforeach
@@ -49,4 +50,4 @@
             </div>
         </div>
     </div>
-    </x-app-layout>
+</x-app-layout>

@@ -17,7 +17,11 @@ class UserController extends Controller
     {
         $params = $request->query();
         // $posts = Post::mypost($params)->paginate(5);
-        $posts = $request->user()->advisor->posts;
+        // $posts = $request->user()->advisor->posts;
+        $posts = [];
+        if (isset($request->user()->advisor)) {
+            $posts = $request->user()->advisor->posts;
+        }
 
         return view('dashboard', compact('posts'));
     }

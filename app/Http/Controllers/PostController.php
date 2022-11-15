@@ -107,16 +107,16 @@ class PostController extends Controller
     {
         if (Auth::user()->cannot('update', $post)) {
             return redirect()->route('posts.show', $post)
-                ->withErrors('自分の求人情報以外は更新できません');
+                ->withErrors('自分の記事以外は更新できません');
             $post->fill($request->all());
             try {
                 $post->save();
             } catch (\Exception $e) {
                 return back()->withInput()
-                    ->withErrors('求人情報更新処理でエラーが発生しました');
+                    ->withErrors('記事更新処理でエラーが発生しました');
 
                 return redirect()->route('posts.show', $post)
-                    > with('notice', '求人情報を更新しました');
+                    > with('notice', '記事情報を更新しました');
             }
         }
     }
@@ -146,6 +146,6 @@ class PostController extends Controller
         }
 
         return redirect()->route('posts.index')
-            ->with('notice', '求人情報を削除しました');
+            ->with('notice', '記事を削除しました');
     }
 }
