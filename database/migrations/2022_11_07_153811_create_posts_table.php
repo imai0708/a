@@ -29,6 +29,8 @@ class CreatePostsTable extends Migration
                 ->cascadeOnDelete();
             $table->string('image');
             $table->timestamps();
+            $table->string('title');
+            $table->text('description');
         });
     }
 

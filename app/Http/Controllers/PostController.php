@@ -10,6 +10,8 @@ use App\Models\Occupation;
 use App\Models\Post;
 use App\Models\Situation;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -56,12 +58,28 @@ class PostController extends Controller
         $post = new Post($request->all());
         $post->advisor_id = $request->user()->advisor->id;
 
+
+        $file = $request->file('image');
+        $post->image = date('YmdHis') . '_' . $file->getClientOriginalName();
+
+        DB::beginTransaction();
         try {
             // 登録
             $post->save();
+
+            // 画像アップロード
+            if (!Storage::putFileAs('public/images/posts', $file, $post->image)) {
+                // 例外を投げてロールバックさせる
+                throw new \Exception('画像ファイルの保存に失敗しました。');
+            }
+
+            // トランザクション終了(成功)
+            DB::commit();
         } catch (\Exception $e) {
-            return back()->withInput()
-                ->withErrors('記事登録処理でエラーが発生しました');
+            DB::rollback();
+            // return back()->withInput()
+            //     ->withErrors('記事登録処理でエラーが発生しました');
+            return back()->withInput()->withErrors($e->getMessage());
         }
 
         return redirect()

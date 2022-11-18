@@ -23,30 +23,30 @@
                     <div class="mt-4">
                         <div class="flex justify-between text-sm items-center mb-4">
                             <div class="border border-gray-900 px-2 h-7 leading-7 rounded-full">
-                                {{ $j->occupation->name }}</div>
-                            <div class="text-gray-700 text-sm text-right">
-                                <span>応募期限 :{{ $j->due_date }}</span>
-                                <span class="inline-block mx-1">|</span>
-                                <span>エントリー :{{ $j->entries->count() }}</span>
+                                {{-- {{ $j->occupation->name }}</div> --}}
+                                {{-- <div class="text-gray-700 text-sm text-right">
+                                    <span>応募期限 :{{ $j->due_date }}</span>
+                                    <span class="inline-block mx-1">|</span>
+                                    {{-- <span>エントリー :{{ $j->entries->count() }}</span> --}}
+                                {{-- </div> --}} 
+                            </div>
+                            <h2 class="text-lg text-gray-700 font-semibold">{{ $j->title }}
+                            </h2>
+                            <p class="mt-4 text-md text-gray-600">
+                                {{ Str::limit($j->description, 50, '...') }}
+                            </p>
+                            <div class="flex justify-end items-center">
+                                <a href="{{ route('posts.show', $j) }}"
+                                    class="flex justify-center bg-gradient-to-r from-indigo-500 to-blue-600 hover:bg-gradient-to-l hover:from-blue-500 hover:to-indigo-600 text-gray-100 mt-4 px-5 py-3 rounded-full tracking-wide font-semibold shadow-lg cursor-pointer transition ease-in duration-500">
+                                    more
+                                </a>
                             </div>
                         </div>
-                        <h2 class="text-lg text-gray-700 font-semibold">{{ $j->title }}
-                        </h2>
-                        <p class="mt-4 text-md text-gray-600">
-                            {{ Str::limit($j->description, 50, '...') }}
-                        </p>
-                        <div class="flex justify-end items-center">
-                            <a href="{{ route('posts.show', $j) }}"
-                                class="flex justify-center bg-gradient-to-r from-indigo-500 to-blue-600 hover:bg-gradient-to-l hover:from-blue-500 hover:to-indigo-600 text-gray-100 mt-4 px-5 py-3 rounded-full tracking-wide font-semibold shadow-lg cursor-pointer transition ease-in duration-500">
-                                more
-                            </a>
-                        </div>
                     </div>
-                </div>
-                <hr>
+                    <hr>
             @endforeach
             <div class="block mt-3">
-                {{ $posts->links() }}
+                {{-- {{ $posts->links() }} --}}
             </div>
         </div>
     </div>

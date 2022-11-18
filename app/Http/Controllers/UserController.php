@@ -22,7 +22,7 @@ class UserController extends Controller
         if (isset($request->user()->advisor)) {
             $posts = $request->user()->advisor->posts;
         }
-
+        // dd($posts);
         return view('dashboard', compact('posts'));
     }
 }

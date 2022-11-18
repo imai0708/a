@@ -28,10 +28,14 @@ class Post extends Model
 
     protected $fillable = [
         'title',
-        'occupation_id',
+        // 'occupation_id',
         'due_date',
         'description',
-        'is_published',
+        // 'is_published',
+        'item_id',
+        'situation_id',
+        'advisor_id',
+
     ];
 
     public function scopeMyJobOffer(Builder $query, $params)

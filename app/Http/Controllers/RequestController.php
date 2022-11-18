@@ -14,10 +14,10 @@ class RequestController extends Controller
      * @param  \App\Models\JobOffer  $job_offer
      * @return \Illuminate\Http\Response
      */
-    public function store(JobOffer $job_offer)
+    public function store(Post $post)
     {
-        $entry = new Entry([
-            'job_offer_id' => $job_offer->id,
+        $entry = new Request([
+            'post_id' => $post->id,
             'user_id' => Auth::user()->id,
         ]);
 
@@ -26,11 +26,11 @@ class RequestController extends Controller
             $entry->save();
         } catch (\Exception $e) {
             return back()->withInput()
-                ->withErrors('エントリーでエラーが発生しました');
+                ->withErrors('依頼が発生しました');
         }
 
         return redirect()
-            ->route('job_offers.show', $job_offer)
+            ->route('posts.show', $post)
             ->with('notice', 'エントリーしました');
     }
 
@@ -65,8 +65,8 @@ class RequestController extends Controller
      */
     public function create()
     {
-        $occupations = Occupation::all();
-        return view('requeest.create', compact('occupations'));
+        // $occupations = Occupation::all();
+        // return view('requeest.create', compact('occupations'));
     }
 
     /**

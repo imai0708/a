@@ -43,7 +43,7 @@ class Advisor extends Model
         return $this->hasMany(\App\Models\Message::class);
     }
 
-    public function post()
+    public function posts()
     {
         return $this->hasMany(\App\Models\Post::class);
     }
