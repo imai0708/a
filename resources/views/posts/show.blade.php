@@ -23,7 +23,7 @@
 
 
             <img src="{{ Storage::url('images/posts/' . $post->image) }}" alt="" class="mb-4">
-            <p class="text-gray-700 text-base">{!! nl2br(e($post->body)) !!}</p>
+            <p class="text-gray-700 text-base">{!! nl2br(e($post->description)) !!}</p>
         </article>
         <div class="flex flex-row text-center my-4">
 

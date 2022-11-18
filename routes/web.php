@@ -14,6 +14,11 @@ use App\Http\Controllers\UserController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/search', function () {
+    return view('search');
+})->name('search');
+
+
 
 Route::get('/welcome', function () {
     return view('welcome');

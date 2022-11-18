@@ -53,9 +53,9 @@
                                 <div class="mt-4 flex items-center space-x-4 py-6">
                                     <div>
                                         @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
-                                            <img class="h-8 w-8 rounded-full object-cover"
+                                            {{-- <img class="h-8 w-8 rounded-full object-cover"
                                                 src="{{ $j->advisor->profile_photo_url }}"
-                                                alt="{{ $j->advisor->user->name }}" />
+                                                alt="{{ $j->advisor->user->name }}" /> --}}
                                         @endif
                                     </div>
                                     <div class="text-sm font-semibold">

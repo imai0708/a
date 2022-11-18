@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\PostRequest;
 use App\Models\Genre;
+use App\Models\GenrePost;
 use App\Models\Item;
 use App\Models\Occupation;
 use App\Models\Post;
@@ -22,11 +23,15 @@ class PostController extends Controller
      */
     public function index(Request $request)
     {
+        $id = $request->genres;
         $params = $request->query();
-        $posts = Post::search($params)
-            ->with(['advisor'])->latest()->paginate(5);
+        // $posts = Post::search($params)
+        //     ->with(['advisor'])->latest()->paginate(5);
+        // $posts = GenrePost::where('genre_id', 1)->first();
+        $posts = GenrePost::find($id);
+        // dd($posts);
 
-        $posts->appends($params);
+        // $posts->appends(compact('genres'));
 
         $genres = Genre::all();
 
@@ -166,4 +171,45 @@ class PostController extends Controller
         return redirect()->route('posts.index')
             ->with('notice', '記事を削除しました');
     }
+
+    // public function search(Request $request)
+    // {
+        // ユーザー一覧をページネートで取得
+        // $posts = Post::paginate(20);
+
+     // 検索フォームで入力された値を取得する
+        // $search = $request->input('search');
+
+        // クエリビルダ
+        // $query = User::query();
+
+       // もし検索フォームにキーワードが入力されたら
+//         if ($search) {
+
+//             // 全角スペースを半角に変換
+//             $spaceConversion = mb_convert_kana($search, 's');
+
+//             // 単語を半角スペースで区切り、配列にする（例："山田 翔" → ["山田", "翔"]）
+//             $wordArraySearched = preg_split('/[\s,]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
+
+
+//             // 単語をループで回し、ユーザーネームと部分一致するものがあれば、$queryとして保持される
+//             foreach($wordArraySearched as $value) {
+//                 $query->where('name', 'like', '%'.$value.'%');
+//             }
+
+// // 上記で取得した$queryをページネートにし、変数$usersに代入
+//             $posts = $query->paginate(20);
+
+        // }
+
+        // ビューにusersとsearchを変数として渡す
+    //     return view('posts.index')
+    //         ->with([
+    //             'posts' => $posts,
+    //             'search' => $search,
+    //         ]);
+    // }
+// }
+
 }
