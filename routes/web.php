@@ -19,7 +19,6 @@ Route::get('/search', function () {
 })->name('search');
 
 
-
 Route::get('/welcome', function () {
     return view('welcome');
 })->middleware('guest')

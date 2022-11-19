@@ -39,10 +39,11 @@ class CreateNewUser implements CreatesNewUsers
             ]);
 
             // アドバイザー情報の登録
-            if (isset($input['advisor_name'])) {
+            if (isset($input['job'])) {
                 Advisor::create([
                     'user_id' => $user->id,
-                    'name' => $input['advisor_name'],
+                    'job' =>  $input['job'],
+                    'price' =>  $input['price'],
                 ]);
             }
 

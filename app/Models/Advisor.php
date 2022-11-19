@@ -13,11 +13,12 @@ class Advisor extends Model
 
     protected $fillable = [
         'user_id',
-        'name',
-        'profile',
-        'profile_image'
+        'price',
+        'job',
 
     ];
+
+    protected $table = 'advisors';
 
     /**
      * The accessors to append to the model's array form.

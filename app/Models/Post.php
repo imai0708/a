@@ -27,14 +27,14 @@ class Post extends Model
     ];
 
     protected $fillable = [
-        'title',
+        // 'title',
         // 'occupation_id',
-        'due_date',
-        'description',
+        // 'due_date',
         // 'is_published',
         'item_id',
         'situation_id',
-        'advisor_id',
+        'genre_id'
+        // 'advisor_id',
 
     ];
 
