@@ -6,16 +6,27 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class Post extends Model
 {
     use HasFactory;
+    // // ステータス
+    // const STATUS_CLOSE = 0;
+    // const STATUS_OPEN = 1;
+    // const STATUS_LIST = [
+    //     self::STATUS_CLOSE => '未公開',
+    //     self::STATUS_OPEN => '公開',
+    // ];
+
     // ステータス
-    const STATUS_CLOSE = 0;
-    const STATUS_OPEN = 1;
+    const STATUS_ENTRY = 0;
+    const STATUS_APPROVAL = 1;
+    const STATUS_REJECT = 2;
     const STATUS_LIST = [
-        self::STATUS_CLOSE => '未公開',
-        self::STATUS_OPEN => '公開',
+        self::STATUS_ENTRY => 'エントリー中',
+        self::STATUS_APPROVAL => '承認',
+        self::STATUS_REJECT => '却下',
     ];
 
     // 並び替え
@@ -27,22 +38,35 @@ class Post extends Model
     ];
 
     protected $fillable = [
-        // 'title',
+        'title',
+        'description',
         // 'occupation_id',
         // 'due_date',
         // 'is_published',
         'item_id',
         'situation_id',
-        'genre_id'
+        // 'genre_id'
         // 'advisor_id',
 
     ];
 
-    public function scopeMyJobOffer(Builder $query, $params)
+    protected $appends = [
+        'user_name',
+        'image_url',
+    ];
+
+    protected $hidden = [
+        'image',
+        'user_id',
+        'updated_at',
+        'user',
+    ];
+
+    public function scopeMyPost(Builder $query, $params)
     {
         if (Auth::user()->can('advisor')) {
             $query->latest()
-                ->with(['entries', 'occupation'])
+                // ->with(['request', 'occupation'])
                 ->where('advisor_id', Auth::user()->advisor->id)
                 ->where('is_published', $params['is_published'] ?? self::STATUS_OPEN);
         } else {
@@ -74,6 +98,10 @@ class Post extends Model
     {
         return $this->hasMany(\App\Models\Favorites::class);
     }
+    public function requests()
+    {
+        return $this->hasMany(\App\Models\Request::class);
+    }
 
     public function genres()
     {
@@ -97,5 +125,10 @@ class Post extends Model
         }
 
         return $query;
+    }
+
+    public function getImageUrlAttribute()
+    {
+        return Storage::url("images/posts/" . $this->image);
     }
 }

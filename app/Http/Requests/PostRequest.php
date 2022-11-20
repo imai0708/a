@@ -31,11 +31,12 @@ class PostRequest extends FormRequest
             'title' => 'required|string|max:50',
             'genre'=>'re',
             // 'due_date' => 'required|after_or_equal:today',
+            'image'=>'required|file|image',
             'description' => 'required|string|max:2000',
-            'is_published' => 'nullable|boolean',
+            // 'is_published' => 'nullable|boolean',
         ];
 
-        if ($route === 'job_offer.update') {
+        if ($route === 'posts.update') {
             $rule['due_date'] = 'required|date';
         }
 

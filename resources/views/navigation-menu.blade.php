@@ -57,7 +57,7 @@
 
                             @can('create', App\Models\Post::class)
                                 <x-jet-dropdown-link href="{{ route('posts.create') }}">
-                                    {{ '記事報登録' }}
+                                    {{ '記事登録' }}
                                 </x-jet-dropdown-link>
                             @endcan
 

@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class GenrePost extends Model
 {
     use HasFactory;
+    protected $table = "genre_post";
 }

@@ -25,10 +25,10 @@ class PostController extends Controller
     {
         $id = $request->genres;
         $params = $request->query();
-        // $posts = Post::search($params)
-        //     ->with(['advisor'])->latest()->paginate(5);
+        $posts = Post::search($params)
+            ->with(['advisor'])->latest()->paginate(5);
         // $posts = GenrePost::where('genre_id', 1)->first();
-        $posts = GenrePost::find($id);
+        // $posts = GenrePost::find($id);
         // dd($posts);
 
         // $posts->appends(compact('genres'));
@@ -71,7 +71,7 @@ class PostController extends Controller
         try {
             // 登録
             $post->save();
-
+            $post->genres()->attach($request->genre_id);
             // 画像アップロード
             if (!Storage::putFileAs('public/images/posts', $file, $post->image)) {
                 // 例外を投げてロールバックさせる
@@ -104,7 +104,29 @@ class PostController extends Controller
         //     'post_id' => $post->id,
         //     'user_id' => Auth::user()->id,
         // ]);
-        return view('posts.show', compact('post'));
+        
+        $entry = !isset(Auth::user()->advisor)
+            // firstWhere('user_id', Auth::user()->id)で一件だけ取得 'user_idで検索
+            ? $post->advisor->requests->firstWhere('user_id', Auth::user()->id)
+            // : '';企業アカウントだったときにからの文字列を渡す
+            : '';
+
+        // $request = Auth::user()->id == $post->advisor->user_id
+        //     ? $post->requests()->with('user')->get()
+        //     : [];
+        // $request = Auth::user()->id == $post->advisor->user_id
+        //     ? $post->requests
+        //     : [];
+
+        // $entries = Auth::user()->id == $job_offer->company->user_id
+        //     // オファーしたのがユーザーかを確認
+        //     ? $job_offer->entries()->with('user')->get()
+        //     : [];
+        
+
+        // return view('posts.show', compact('post', 'request', 'requests'));
+        return view('posts.show', compact(['post', 'entry']));
+
     }
 
     /**
@@ -174,42 +196,42 @@ class PostController extends Controller
 
     // public function search(Request $request)
     // {
-        // ユーザー一覧をページネートで取得
-        // $posts = Post::paginate(20);
+    // ユーザー一覧をページネートで取得
+    // $posts = Post::paginate(20);
 
-     // 検索フォームで入力された値を取得する
-        // $search = $request->input('search');
+    // 検索フォームで入力された値を取得する
+    // $search = $request->input('search');
 
-        // クエリビルダ
-        // $query = User::query();
+    // クエリビルダ
+    // $query = User::query();
 
-       // もし検索フォームにキーワードが入力されたら
-//         if ($search) {
+    // もし検索フォームにキーワードが入力されたら
+    //         if ($search) {
 
-//             // 全角スペースを半角に変換
-//             $spaceConversion = mb_convert_kana($search, 's');
+    //             // 全角スペースを半角に変換
+    //             $spaceConversion = mb_convert_kana($search, 's');
 
-//             // 単語を半角スペースで区切り、配列にする（例："山田 翔" → ["山田", "翔"]）
-//             $wordArraySearched = preg_split('/[\s,]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
+    //             // 単語を半角スペースで区切り、配列にする（例："山田 翔" → ["山田", "翔"]）
+    //             $wordArraySearched = preg_split('/[\s,]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
 
 
-//             // 単語をループで回し、ユーザーネームと部分一致するものがあれば、$queryとして保持される
-//             foreach($wordArraySearched as $value) {
-//                 $query->where('name', 'like', '%'.$value.'%');
-//             }
+    //             // 単語をループで回し、ユーザーネームと部分一致するものがあれば、$queryとして保持される
+    //             foreach($wordArraySearched as $value) {
+    //                 $query->where('name', 'like', '%'.$value.'%');
+    //             }
 
-// // 上記で取得した$queryをページネートにし、変数$usersに代入
-//             $posts = $query->paginate(20);
+    // // 上記で取得した$queryをページネートにし、変数$usersに代入
+    //             $posts = $query->paginate(20);
 
-        // }
+    // }
 
-        // ビューにusersとsearchを変数として渡す
+    // ビューにusersとsearchを変数として渡す
     //     return view('posts.index')
     //         ->with([
     //             'posts' => $posts,
     //             'search' => $search,
     //         ]);
     // }
-// }
+    // }
 
 }

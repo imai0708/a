@@ -13,7 +13,7 @@ class CreateGenrePostsTable extends Migration
      */
     public function up()
     {
-        Schema::create('genre_posts', function (Blueprint $table) {
+        Schema::create('genre_post', function (Blueprint $table) {
             $table->id();
             $table->foreignId('genre_id')
                 ->constrained()

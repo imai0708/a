@@ -49,7 +49,7 @@
                 <label class="block text-white mb-2" for="genre_id">
                     系統
                 </label>
-                <select name="genre_id"
+                <select name="genre_id[]"
                     class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-pink-600 w-full py-2 px-3"
                     required>
                     <option disabled selected value="">選択してください</option>

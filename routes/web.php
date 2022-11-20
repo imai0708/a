@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Request;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\RequestController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,6 +16,7 @@ use App\Http\Controllers\UserController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 Route::get('/search', function () {
     return view('search');
 })->name('search');
@@ -53,3 +56,17 @@ Route::resource('posts', PostController::class)
 
 Route::get('/dashboard', [UserController::class, 'dashboard'])
     ->name('dashboard');
+
+
+
+Route::patch('/posts/{post}/requests/request/approval', [RequestController::class, 'approval'])
+    ->name('posts.requests.approval')
+    ->middleware('can:advisor');
+
+Route::patch('/posts/{post}/requests/request/reject', [RequestController::class, 'reject'])
+    ->name('posts.request.reject')
+    ->middleware('can:advisor');
+    
+Route::resource('posts.requests', RequestController::class)
+    ->only(['create', 'store', 'edit', 'update', 'destroy'])
+    ->middleware('can:user');
